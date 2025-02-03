@@ -87,6 +87,7 @@
             animation: fadeInUp 1.5s 0.5s forwards;
         }
 
+        /* Button Enhancements */
         .cta-button {
             display: inline-block;
             padding: 1rem 2rem;
@@ -100,12 +101,48 @@
             transform: translateY(50px);
             animation: fadeInUp 1.5s 1s forwards;
             box-shadow: 0 10px 20px rgba(187, 134, 252, 0.3);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            outline: none;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg, 
+                transparent, 
+                rgba(255,255,255,0.3), 
+                transparent
+            );
+            transition: all 0.5s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
         }
 
         .cta-button:hover {
             transform: scale(1.05);
             box-shadow: 0 15px 30px rgba(187, 134, 252, 0.5);
             background-color: var(--accent-variant);
+        }
+
+        .cta-button:active {
+            transform: scale(0.95);
+            box-shadow: 0 5px 10px rgba(187, 134, 252, 0.3);
+        }
+
+        .cta-button:focus {
+            outline: 2px solid var(--text-primary);
+            outline-offset: 3px;
         }
 
         .background-particles {
@@ -170,24 +207,155 @@
             50% { clip: rect(83px, 9999px, 40px, 0); }
             100% { clip: rect(29px, 9999px, 61px, 0); }
         }
+
+        /* Navigation Transition Styles */
+        .transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-primary);
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .transition-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Responsive Adjustments */
+        @media screen and (max-width: 768px) {
+            .welcome-container {
+                padding: 1rem;
+            }
+
+            .welcome-content {
+                width: 100%;
+                max-width: 100%;
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .tagline {
+                font-size: 1.2rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .cta-button {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            /* Responsive Countdown */
+            @keyframes float {
+                0%, 100% { transform: translateY(0) scale(1); }
+                50% { transform: translateY(-10px) scale(1.02); }
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .logo {
+                font-size: 2rem;
+                letter-spacing: 0.5px;
+            }
+
+            .tagline {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .cta-button {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.8rem;
+            }
+
+            /* Mobile Particle Adjustments */
+            .background-particles {
+                opacity: 0.5;
+            }
+        }
+
+        /* Accessibility and Touch Improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .cta-button {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+                touch-action: manipulation;
+            }
+
+            .cta-button:active {
+                transform: scale(0.9);
+                transition: transform 0.1s ease;
+            }
+        }
+
+        /* High Contrast and Dark Mode Support */
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg-primary: #FFFFFF;
+                --bg-secondary: #F0F0F0;
+                --text-primary: #121212;
+                --text-secondary: #666666;
+                --accent-color: #6A0DAD;
+                --accent-variant: #4B0082;
+            }
+
+            .welcome-container {
+                background: linear-gradient(
+                    135deg, 
+                    rgba(106, 13, 173, 0.1) 0%, 
+                    rgba(75, 0, 130, 0.1) 100%
+                );
+            }
+        }
+
+        /* Reduce Motion Preference */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+
+            .logo::before,
+            .logo::after {
+                content: none;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="transition-overlay" id="transition-overlay"></div>
     <div class="background-particles" id="particles-js"></div>
     <div class="welcome-container">
         <div class="welcome-content">
             <div class="logo" data-text="Viper Imagination">Viper Imagination</div>
             <div class="tagline">Transforming Ideas into Digital Realities</div>
-            <a href="Rohit_Kumar/index.html" class="cta-button">Enter Portfolio</a>
+            <a href="Rohit_Kumar/index.html" class="cta-button" id="portfolio-link">Wait 5 Seconds for Portfolio</a>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            particlesJS('particles-js', {
+            // Detect touch devices
+            function isTouchDevice() {
+                return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            }
+
+            // Adjust particle configuration for mobile
+            const particleConfig = {
                 particles: {
-                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    number: { 
+                        value: isTouchDevice() ? 40 : 80, 
+                        density: { enable: true, value_area: 800 } 
+                    },
                     color: { value: '#BB86FC' },
                     shape: { 
                         type: 'circle',
@@ -213,7 +381,7 @@
                     },
                     move: {
                         enable: true,
-                        speed: 4,
+                        speed: isTouchDevice() ? 3 : 6,
                         direction: 'none',
                         random: false,
                         straight: false,
@@ -237,6 +405,123 @@
                     }
                 },
                 retina_detect: true
+            };
+
+            // Initialize particles with mobile-friendly config
+            particlesJS('particles-js', particleConfig);
+
+            function startAutoRedirect() {
+                const portfolioLink = document.getElementById('portfolio-link');
+                const transitionOverlay = document.getElementById('transition-overlay');
+                const href = portfolioLink ? portfolioLink.getAttribute('href') : 'Rohit_Kumar/index.html';
+
+                let countdown = 5;
+                const countdownElement = document.createElement('div');
+                countdownElement.style.position = 'fixed';
+                countdownElement.style.bottom = '20px';
+                countdownElement.style.left = '50%';
+                countdownElement.style.transform = 'translateX(-50%)';
+                countdownElement.style.color = 'var(--text-secondary)';
+                countdownElement.style.zIndex = '10000';
+                countdownElement.style.background = 'rgba(18, 18, 18, 0.7)';
+                countdownElement.style.padding = '10px 20px';
+                countdownElement.style.borderRadius = '50px';
+                document.body.appendChild(countdownElement);
+
+                const countdownInterval = setInterval(() => {
+                    if (countdown > 0) {
+                        countdownElement.textContent = `Redirecting in ${countdown} seconds`;
+                        countdown--;
+                    } else {
+                        clearInterval(countdownInterval);
+                        countdownElement.remove();
+                        
+                        // Trigger transition
+                        if (transitionOverlay) {
+                            transitionOverlay.classList.add('active');
+                        }
+
+                        // Navigate
+                        setTimeout(() => {
+                            try {
+                                window.location.href = href;
+                            } catch (error) {
+                                console.error('Auto-redirect error:', error);
+                                window.location.assign(href);
+                            }
+                        }, 500);
+                    }
+                }, 1000);
+
+                // Allow cancellation of auto-redirect
+                function cancelAutoRedirect() {
+                    clearInterval(countdownInterval);
+                    if (countdownElement) {
+                        countdownElement.remove();
+                    }
+                }
+
+                // Setup manual navigation
+                function setupManualNavigation() {
+                    const portfolioLink = document.getElementById('portfolio-link');
+                    const transitionOverlay = document.getElementById('transition-overlay');
+
+                    if (!portfolioLink) {
+                        console.error('Portfolio link not found!');
+                        return;
+                    }
+
+                    if (!transitionOverlay) {
+                        console.error('Transition overlay not found!');
+                        return;
+                    }
+
+                    portfolioLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        console.log('Portfolio link clicked');
+                        
+                        const href = this.getAttribute('href');
+                        
+                        if (!href) {
+                            console.error('No href attribute found');
+                            return;
+                        }
+
+                        // Cancel auto-redirect
+                        cancelAutoRedirect();
+
+                        transitionOverlay.classList.add('active');
+                        
+                        setTimeout(() => {
+                            try {
+                                window.location.href = href;
+                            } catch (error) {
+                                console.error('Navigation error:', error);
+                                window.location.assign(href);
+                            }
+                        }, 500);
+                    });
+
+                    // Keyboard support
+                    portfolioLink.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.click();
+                        }
+                    });
+                }
+
+                setupManualNavigation();
+            }
+
+            // Start auto-redirect
+            startAutoRedirect();
+
+            // Global error handling
+            window.addEventListener('error', function(event) {
+                console.error('Unhandled error:', event.error);
+                alert('An error occurred. Please try again.');
             });
         });
     </script>
