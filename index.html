@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viper Imagination | Welcome</title>
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1E1E1E;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0B0B0;
+            --accent-color: #BB86FC;
+            --accent-variant: #3700B3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+        }
+
+        .welcome-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            perspective: 1000px;
+            background: linear-gradient(
+                135deg, 
+                rgba(55, 0, 179, 0.3) 0%, 
+                rgba(187, 134, 252, 0.2) 100%
+            );
+            position: relative;
+        }
+
+        .welcome-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(
+                circle at center, 
+                rgba(187, 134, 252, 0.05) 0%, 
+                transparent 70%
+            );
+            pointer-events: none;
+        }
+
+        .welcome-content {
+            text-align: center;
+            max-width: 800px;
+            padding: 2rem;
+            transform-style: preserve-3d;
+            animation: float 4s ease-in-out infinite;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            font-size: 4rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-shadow: 0 0 20px rgba(187, 134, 252, 0.5);
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1.5s forwards;
+            letter-spacing: 2px;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1.5s 0.5s forwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: var(--accent-color);
+            color: var(--bg-primary);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1.5s 1s forwards;
+            box-shadow: 0 10px 20px rgba(187, 134, 252, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(187, 134, 252, 0.5);
+            background-color: var(--accent-variant);
+        }
+
+        .background-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Glitch Text Effect */
+        .logo {
+            position: relative;
+        }
+
+        .logo::before,
+        .logo::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+        }
+
+        .logo::before {
+            left: 2px;
+            text-shadow: -2px 0 red;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+
+        .logo::after {
+            left: -2px;
+            text-shadow: -2px 0 blue;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(61px, 9999px, 52px, 0); }
+            50% { clip: rect(83px, 9999px, 50px, 0); }
+            100% { clip: rect(61px, 9999px, 52px, 0); }
+        }
+
+        @keyframes glitch-anim2 {
+            0% { clip: rect(29px, 9999px, 61px, 0); }
+            50% { clip: rect(83px, 9999px, 40px, 0); }
+            100% { clip: rect(29px, 9999px, 61px, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-particles" id="particles-js"></div>
+    <div class="welcome-container">
+        <div class="welcome-content">
+            <div class="logo" data-text="Viper Imagination">Viper Imagination</div>
+            <div class="tagline">Transforming Ideas into Digital Realities</div>
+            <a href="Rohit_Kumar/index.html" class="cta-button">Enter Portfolio</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: '#BB86FC' },
+                    shape: { 
+                        type: 'circle',
+                        stroke: { width: 0, color: '#000000' },
+                        polygon: { nb_sides: 5 }
+                    },
+                    opacity: {
+                        value: 0.3,
+                        random: false,
+                        anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false }
+                    },
+                    size: {
+                        value: 3,
+                        random: true,
+                        anim: { enable: false, speed: 40, size_min: 0.1, sync: false }
+                    },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: '#BB86FC',
+                        opacity: 0.3,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 4,
+                        direction: 'none',
+                        random: false,
+                        straight: false,
+                        out_mode: 'out',
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: 'canvas',
+                    events: {
+                        onhover: { enable: true, mode: 'repulse' },
+                        onclick: { enable: true, mode: 'push' },
+                        resize: true
+                    },
+                    modes: {
+                        grab: { distance: 400, line_linked: { opacity: 1 } },
+                        bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
+                        repulse: { distance: 200, duration: 0.4 },
+                        push: { particles_nb: 4 },
+                        remove: { particles_nb: 2 }
+                    }
+                },
+                retina_detect: true
+            });
+        });
+    </script>
+</body>
+</html>
